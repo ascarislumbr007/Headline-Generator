@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Headline Generator</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --light-blue-1: #D4ECFF;   
+      --light-blue-2: #A4D4FF;   
+      --light-blue-3: #6BB9FF;  
+
+      --cream: #FFF8E8;        
+      --cream-soft: #FFFAF0;
+
+      --orange: #FF9D4D;         
+      --orange-deep: #FF7A2F;
+
+      --text-dark: #1D2A3A;
+      --card-bg: rgba(255,255,255,0.55);
+      --shadow: 0 18px 40px rgba(0,0,0,0.15);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Poppins", sans-serif;
+      background: linear-gradient(180deg, var(--light-blue-1), var(--light-blue-2), var(--light-blue-3));
+      background-size: 100% 100%;
+      padding:60px 20px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+      background: var(--card-bg);
+      border-radius:20px;
+      padding:40px 36px;
+      backdrop-filter: blur(12px);
+      border:1px solid rgba(255,255,255,0.4);
+      box-shadow: var(--shadow);
+      animation: fadein .6s ease;
+    }
+
+    @keyframes fadein{
+      from{opacity:0; transform:translateY(10px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    h1{
+      text-align:center;
+      font-size:32px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--text-dark);
+    }
+
+    .subtitle{
+      text-align:center;
+      font-size:15px;
+      margin-bottom:26px;
+      color:#364B63;
+      font-weight:400;
+    }
+
+    textarea{
+      width:100%;
+      min-height:140px;
+      background: var(--cream);
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.1);
+      padding:18px;
+      font-size:15px;
+      color:var(--text-dark);
+      resize:vertical;
+      box-shadow:0 10px 24px rgba(0,0,0,0.1);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    textarea:focus{
+      outline:none;
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(0,0,0,0.18);
+    }
+
+    .btn{
+      margin-top:22px;
+      padding:15px 30px;
+      font-size:16px;
+      font-weight:600;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      color:white;
+      background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+      box-shadow:0 12px 28px rgba(255,125,60,0.28);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 38px rgba(255,125,60,0.35);
+    }
+
+    .result-box{
+      margin-top:32px;
+      padding:22px;
+      background: var(--cream-soft);
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 10px 20px rgba(0,0,0,0.1);
+      position:relative;
+    }
+
+    /* thin orange accent bar */
+    .result-box::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height:6px;
+      border-radius:14px 14px 0 0;
+      background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+    }
+
+    .result-title{
+      font-size:18px;
+      font-weight:600;
+      color:var(--text-dark);
+      margin-bottom:12px;
+      text-align:center;
+    }
+
+    .result{
+      font-size:20px;
+      font-weight:600;
+      color:#364B63;
+      min-height:34px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>📰 Headline Generator</h1>
+    <div class="subtitle">Enter your news article below and get a headline instantly.</div>
+
+    <textarea id="article" placeholder="Paste your news article here..."></textarea>
+
+    <button class="btn" id="genBtn">Generate Headline</button>
+
+    <div class="result-box">
+      <div class="result-title">Generated Headline:</div>
+      <div id="result" class="result">—</div>
+    </div>
+
+  </div>
+
+  <script>
+    const btn = document.getElementById("genBtn");
+    const txt = document.getElementById("article");
+    const res = document.getElementById("result");
+
+    function makeHeadline(text){
+      text = (text || "").trim();
+      if(!text) return "Please enter an article.";
+      const first = text.split(/[.!?]\s/)[0] || text;
+      const words = first.split(/\s+/).slice(0, 10);
+      let headline = words.join(" ");
+      headline = headline.replace(/\b\w/g, ch => ch.toUpperCase());
+      if(first.split(/\s+/).length > words.length) headline += "…";
+      return headline;
+    }
+
+    btn.addEventListener("click", () => {
+      const text = txt.value;
+      res.textContent = "Generating…";
+      setTimeout(() => {
+        res.textContent = makeHeadline(text);
+      }, 300);
+    });
+  </script>
+
+</body>
+</html>
