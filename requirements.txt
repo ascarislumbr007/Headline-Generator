@@ -197,3 +197,10 @@ wheel==0.45.1
 wrapt==1.17.2
 xxhash==3.5.0
 yarl==1.18.3
+flask
+torch
+transformers
+gensim==4.3.3
+numpy
+scipy>=1.7.0,<1.14.0
+scikit-learn
